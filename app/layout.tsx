@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import{Inter} from "next/font/google"
 import "./globals.css";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import  Header  from "@/components/ui/header.jsx";
+import {ClerkProvider}  from "@clerk/nextjs";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter ({subsets:["latin"]})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,17 +13,30 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  children, // problem that compontes and ui folders 
+}: Readonly<{ children: React.ReactNode }>) {
   return (
+    < ClerkProvider>
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+        {/* header */}
+        <Header/>
+        <main className="min-h-screen"> {children}</main>
+        {/* footer */}
+        <footer className="bg-muted/50 py-12">
+          <div className="container mx-auto px-4 text-center text-gray-200 ">
+            <p> Made with ❤️ by Kit Students</p>
+          </div>
+        </footer>
+        </ThemeProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
