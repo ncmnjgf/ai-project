@@ -1,18 +1,81 @@
 "use client"
 import React from 'react'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from './ui/button'
+import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { DropdownMenuLabel } from './ui/dropdown-menu'
+import { DropdownMenuSeparator } from './ui/dropdown-menu'
+import { ChevronDown, FileText, LayoutDashboard, PenBox, StarIcon } from 'lucide-react'
+import { DropdownMenuContent } from './ui/dropdown-menu'
+import { DropdownMenuItem } from './ui/dropdown-menu'
 
 const Header = () => {
   return (
-    <div>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
+    <header className='fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60'>
+      <nav className='container mx-auto px-4 h-16 flex items-center justify-between'>
+        <Link href='/'>
+          <Image
+            src="/logopra.png"
+            alt='logo'
+            width={200} height={60}
+            className='h-12 py-1 w-auto  object-contain' />
+        </Link>
 
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </div>
+        <div className='flex items-center space-x-2 nd:space-x-4'>
+          <SignedIn>
+            <Link href={'/dashboard'}>
+              <Button variant={"outline"}>
+                <LayoutDashboard className='h-4 w-4' />
+                <span className='hidden md:block'>Industry Insights</span>
+              </Button>
+            </Link>
+          </SignedIn>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button>
+                <StarIcon className='h-4 w-4' />
+                <span className='hidden md:block'>Growth Tools</span>
+                <ChevronDown className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link href={'/resume'} className='flex items-center gap-2'>
+                  <FileText className='h-4 w-4' />
+                  <span>Build Resume</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={'/coverletter'} className='flex items-center gap-2'>
+                  <PenBox className='h-4 w-4' />
+                  <span>Cover Letter</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={'/interview'} className='flex items-center gap-2'>
+                  <FileText className='h-4 w-4' />
+                  <span>Interview Prep</span>
+                </Link>
+              </DropdownMenuItem>
+
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+
+          <SignedOut>
+            <SignInButton>
+              <Button variant={"outline"} className='flex items-center gap-2'>Sign In</Button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
+      </nav>
+    </header>
   )
 }
 
